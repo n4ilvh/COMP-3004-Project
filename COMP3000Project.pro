@@ -1,24 +1,37 @@
-QT       += core gui
+QT       += core gui widgets
+CONFIG   += c++17
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
-
-CONFIG += c++11
-
-# You can make your code fail to compile if it uses deprecated APIs.
-# In order to do so, uncomment the following line.
-#DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
+TARGET = COMP3000Project
+TEMPLATE = app
 
 SOURCES += \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    loginwidget.cpp \
+    rolehomewidget.cpp \
+    useridentificationcontrol.cpp \
+    systemdata.cpp \
+    defaultdata.cpp \
+    user.cpp \
+    customer.cpp \
+    menu.cpp \
+    menuitem.cpp \
+    order.cpp \
+    orderhistory.cpp \
+    orderqueue.cpp
 
 HEADERS += \
-    mainwindow.h
-
-FORMS += \
-    mainwindow.ui
-
-# Default rules for deployment.
-qnx: target.path = /tmp/$${TARGET}/bin
-else: unix:!android: target.path = /opt/$${TARGET}/bin
-!isEmpty(target.path): INSTALLS += target
+    mainwindow.h \
+    loginwidget.h \
+    rolehomewidget.h \
+    useridentificationcontrol.h \
+    systemdata.h \
+    defaultdata.h \
+    user.h \
+    staff.h \
+    customer.h \
+    menu.h \
+    menuitem.h \
+    order.h \
+    orderhistory.h \
+    orderqueue.h
