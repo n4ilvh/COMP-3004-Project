@@ -3,18 +3,18 @@
 
 #include <QList>
 #include <QString>
+#include "ingredient.h"
 
 struct IngredientRequirement {
-    QString ingredient;
+    Ingredient ingredient;
     double quantity;
-    QString unit;
 };
 
 class MenuItem {
 public:
     MenuItem(const QString &name, const QString &category, double price);
 
-    void addIngredient(const QString &ingredient, double quantity, const QString &unit);
+    void addIngredient(Ingredient ingredient, double quantity);
 
     const QString &name() const { return m_name; }
     const QString &category() const { return m_category; }

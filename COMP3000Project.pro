@@ -5,6 +5,7 @@ TARGET = COMP3000Project
 TEMPLATE = app
 
 SOURCES += \
+    ingredient.cpp \
     main.cpp \
     mainwindow.cpp \
     loginwidget.cpp \
@@ -21,6 +22,7 @@ SOURCES += \
     orderqueue.cpp
 
 HEADERS += \
+    ingredient.h \
     mainwindow.h \
     loginwidget.h \
     rolehomewidget.h \

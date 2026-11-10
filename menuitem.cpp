@@ -5,7 +5,7 @@ MenuItem::MenuItem(const QString &name, const QString &category, double price)
 {
 }
 
-void MenuItem::addIngredient(const QString &ingredient, double quantity, const QString &unit)
+void MenuItem::addIngredient(Ingredient ingredient, double quantity)
 {
-    m_ingredients.append({ingredient, quantity, unit});
+    m_ingredients.append({ingredient, quantity});
 }

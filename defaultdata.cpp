@@ -14,37 +14,39 @@ void loadMenu(Menu &menu)
                        std::initializer_list<IngredientRequirement> ings) {
         MenuItem item(name, cat, price);
         for (const IngredientRequirement &i : ings)
-            item.addIngredient(i.ingredient, i.quantity, i.unit);
+            item.addIngredient(i.ingredient, i.quantity);
         menu.addItem(item);
     };
 
     // Sandwiches
     add("Dragon Club", Menu::SANDWICH, 9.50,
-        {{"Bread", 3, "slices"}, {"Turkey", 80, "g"}, {"Bacon", 2, "strips"},
-         {"Lettuce", 20, "g"}, {"Tomato", 2, "slices"}});
+        {{Ingredient::Bread, 3}, {Ingredient::Turkey, 80}, {Ingredient::Bacon, 2},
+         {Ingredient::Lettuce, 20}, {Ingredient::Tomato, 2}});
     add("Hobbit Melt", Menu::SANDWICH, 8.75,
-        {{"Bread", 2, "slices"}, {"Cheddar Cheese", 60, "g"}, {"Ham", 50, "g"}, {"Butter", 10, "g"}});
+        {{Ingredient::Bread, 2}, {Ingredient::CheddarCheese, 60}, {Ingredient::Ham, 50},
+         {Ingredient::Butter, 10}});
     add("Sorcerer's Veggie Wrap", Menu::SANDWICH, 8.25,
-        {{"Tortilla", 1, "piece"}, {"Hummus", 40, "g"}, {"Lettuce", 20, "g"},
-         {"Cucumber", 30, "g"}, {"Tomato", 2, "slices"}});
+        {{Ingredient::Tortilla, 1}, {Ingredient::Hummus, 40}, {Ingredient::Lettuce, 20},
+         {Ingredient::Cucumber, 30}, {Ingredient::Tomato, 2}});
 
     // Hot beverages
     add("Dragon Fire Espresso", Menu::HOT_BEVERAGE, 3.25,
-        {{"Coffee Beans", 18, "g"}, {"Water", 60, "ml"}});
+        {{Ingredient::CoffeeBeans, 18}, {Ingredient::Water, 60}});
     add("Mount Doom Mocha", Menu::HOT_BEVERAGE, 4.75,
-        {{"Coffee Beans", 18, "g"}, {"Milk", 200, "ml"}, {"Chocolate Syrup", 30, "ml"}});
+        {{Ingredient::CoffeeBeans, 18}, {Ingredient::Milk, 200}, {Ingredient::ChocolateSyrup, 30}});
     add("Harold's Hot Chocolate", Menu::HOT_BEVERAGE, 4.25,
-        {{"Milk", 250, "ml"}, {"Chocolate Syrup", 40, "ml"}});
+        {{Ingredient::Milk, 250}, {Ingredient::ChocolateSyrup, 40}});
     add("Timmy's Chai Latte", Menu::HOT_BEVERAGE, 4.50,
-        {{"Chai Concentrate", 80, "ml"}, {"Milk", 200, "ml"}});
+        {{Ingredient::ChaiConcentrate, 80}, {Ingredient::Milk, 200}});
 
     // Cold beverages
     add("Iced Dorc Tea", Menu::COLD_BEVERAGE, 3.75,
-        {{"Tea Bags", 2, "bags"}, {"Ice", 150, "g"}, {"Water", 250, "ml"}});
+        {{Ingredient::TeaBags, 2}, {Ingredient::Ice, 150}, {Ingredient::Water, 250}});
     add("Frosty Dragon Cold Brew", Menu::COLD_BEVERAGE, 4.50,
-        {{"Cold Brew Concentrate", 120, "ml"}, {"Ice", 150, "g"}, {"Water", 100, "ml"}});
+        {{Ingredient::ColdBrewConcentrate, 120}, {Ingredient::Ice, 150}, {Ingredient::Water, 100}});
     add("Lemon Elixir", Menu::COLD_BEVERAGE, 3.95,
-        {{"Lemon Juice", 60, "ml"}, {"Sugar", 15, "g"}, {"Ice", 150, "g"}, {"Water", 250, "ml"}});
+        {{Ingredient::LemonJuice, 60}, {Ingredient::Sugar, 15}, {Ingredient::Ice, 150},
+         {Ingredient::Water, 250}});
 }
 
 // ---------- Customers + order history ----------
