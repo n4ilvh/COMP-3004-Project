@@ -4,6 +4,9 @@
 #include "customer.h"
 #include "staff.h"
 #include <QStackedWidget>
+#include "viewmenu.h"
+#include <QVBoxLayout>
+#include <QPushButton>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), m_idControl(m_data)
@@ -36,7 +39,17 @@ void MainWindow::onLoginRequested(const QString &nameOrUsername)
     // Administrator show just their user type and name.
     if (auto *customer = dynamic_cast<Customer *>(user)) {
         Q_UNUSED(customer)
-        // e.g. m_roleView->featureLayout()->addWidget(new CustomerPanel(customer, &m_data));
+
+        auto *viewMenuButton = new QPushButton("View Menu", this);
+        m_roleView->featureLayout()->addWidget(viewMenuButton);
+
+        auto *menu = new viewMenu(m_data);
+        m_stack->addWidget(menu);
+
+        connect(viewMenuButton, &QPushButton::clicked, this, [this, menu] {m_stack->setCurrentWidget(menu); });
+
+
+    // e.g. m_roleView->featureLayout()->addWidget(new CustomerPanel(customer, &m_data));
     } else if (auto *kitchen = dynamic_cast<Kitchen *>(user)) {
         Q_UNUSED(kitchen)
         // e.g. m_roleView->featureLayout()->addWidget(new KitchenPanel(&m_data));

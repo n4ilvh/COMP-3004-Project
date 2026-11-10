@@ -19,7 +19,8 @@ SOURCES += \
     menuitem.cpp \
     order.cpp \
     orderhistory.cpp \
-    orderqueue.cpp
+    orderqueue.cpp \
+    viewmenu.cpp
 
 HEADERS += \
     ingredient.h \
@@ -36,4 +37,8 @@ HEADERS += \
     menuitem.h \
     order.h \
     orderhistory.h \
-    orderqueue.h
+    orderqueue.h \
+    viewmenu.h
+
+FORMS += \
+    ViewMenu.ui
