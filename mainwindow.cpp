@@ -5,6 +5,9 @@
 #include "staff.h"
 #include <QStackedWidget>
 #include "viewmenu.h"
+#include "featurepage.h"
+#include "viewdashboard.h"
+#include "viewqueue.h"
 #include <QVBoxLayout>
 #include <QPushButton>
 
@@ -48,11 +51,17 @@ void MainWindow::onLoginRequested(const QString &nameOrUsername)
 
         connect(viewMenuButton, &QPushButton::clicked, this, [this, menu] {m_stack->setCurrentWidget(menu); });
 
+        // Feature 4: View Customer Online Dashboard
+        addFeaturePage("View Dashboard", new ViewDashboard(*customer));
 
     // e.g. m_roleView->featureLayout()->addWidget(new CustomerPanel(customer, &m_data));
     } else if (auto *kitchen = dynamic_cast<Kitchen *>(user)) {
         Q_UNUSED(kitchen)
-        // e.g. m_roleView->featureLayout()->addWidget(new KitchenPanel(&m_data));
+
+        // Feature 5: View Order Queue
+        auto *queueView = new ViewQueue(m_data.orderQueue());
+        addFeaturePage("View Order Queue", queueView);
+        // features 6 and 7: connect queueView's viewDetailsRequested / completeOrderRequested here
     }
     // --------------------------------------------------------------------------
 
@@ -60,10 +69,33 @@ void MainWindow::onLoginRequested(const QString &nameOrUsername)
     m_stack->setCurrentWidget(m_roleView);
 }
 
+void MainWindow::addFeaturePage(const QString &buttonText, FeaturePage *page)
+{
+    auto *button = new QPushButton(buttonText, m_roleView);
+    m_roleView->featureLayout()->addWidget(button);
+
+    m_stack->addWidget(page);
+    m_featurePages.append(page);
+
+    connect(button, &QPushButton::clicked, this, [this, page] { m_stack->setCurrentWidget(page); });
+    connect(page, &FeaturePage::backRequested, this, &MainWindow::showRoleHome);
+}
+
+void MainWindow::showRoleHome()
+{
+    if (m_roleView)
+        m_stack->setCurrentWidget(m_roleView);
+}
+
 void MainWindow::onExitRequested()
 {
     // Destroy the previous user's screen and clear the form so nothing carries over.
     m_stack->setCurrentWidget(m_login);
+    for (FeaturePage *page : m_featurePages) {
+        m_stack->removeWidget(page);
+        page->deleteLater();
+    }
+    m_featurePages.clear();
     if (m_roleView) {
         m_stack->removeWidget(m_roleView);
         m_roleView->deleteLater();
