@@ -43,13 +43,7 @@ void MainWindow::onLoginRequested(const QString &nameOrUsername)
     if (auto *customer = dynamic_cast<Customer *>(user)) {
         Q_UNUSED(customer)
 
-        auto *viewMenuButton = new QPushButton("View Menu", this);
-        m_roleView->featureLayout()->addWidget(viewMenuButton);
-
-        auto *menu = new viewMenu(m_data);
-        m_stack->addWidget(menu);
-
-        connect(viewMenuButton, &QPushButton::clicked, this, [this, menu] {m_stack->setCurrentWidget(menu); });
+        addFeaturePage("View Menu", new viewMenu(m_data));
 
         // Feature 4: View Customer Online Dashboard
         addFeaturePage("View Dashboard", new ViewDashboard(*customer));
