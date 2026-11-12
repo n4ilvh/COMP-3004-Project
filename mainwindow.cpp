@@ -115,5 +115,8 @@ void MainWindow::onExitRequested()
         m_roleView = nullptr;
     }
     m_currentUser = nullptr;
+    m_ordering.reset();
     m_login->reset();
 }
+
+MainWindow::~MainWindow() = default;

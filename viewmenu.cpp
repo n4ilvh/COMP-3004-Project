@@ -14,7 +14,7 @@ viewMenu::viewMenu(SystemData &data, Mode mode, PlaceOrderControl *ordering, QWi
 
     connect(ui->checkoutRequest, &QPushButton::clicked, this, &viewMenu::checkoutRequested);
 
-    connect(ui->sandwhiches, &QPushButton::clicked, this, [this] {ui->stackedWidget->setCurrentIndex(0);});
+    connect(ui->sandwiches, &QPushButton::clicked, this, [this] {ui->stackedWidget->setCurrentIndex(0);});
     connect(ui->hotBeverages, &QPushButton::clicked, this, [this] {ui->stackedWidget->setCurrentIndex(1);});
     connect(ui->coldBeverages, &QPushButton::clicked, this, [this] {ui->stackedWidget->setCurrentIndex(2);});
 
@@ -48,16 +48,23 @@ void viewMenu::refresh(){
 }
 
 void viewMenu::onAddToCart(){
-    auto *list = qobject_cast<QListWidget *>(ui->stackedWidget->currentWidget());
-    if (!list) return;
+    if (!m_ordering) return;
+
+    const QList<const MenuItem *> *items = &m_sandwhichItems;
+    QListWidget *list = ui->listWidget;
+
+    switch (ui->stackedWidget->currentIndex()) {
+    case 0: items = &m_sandwhichItems; list = ui->listWidget; break;
+    case 1: items = &m_hotBeverages; list = ui->listWidget_2; break;
+    case 2: items = &m_coldBeverages; list = ui->listWidget_3; break;
+    default: return;
+    }
 
     const int row = list->currentRow();
-    if (row < 0) return;
+    if (row < 0 || row >= items->size()) return;
 
-    const QList<const MenuItem *> &items =
-            (list == ui->listWidget) ? m_sandwhichItems :
-            (list == ui->listWidget_2) ? m_hotBeverages : m_coldBeverages;
-   if (row < items.size() && m_ordering) m_ordering->addItem(*items.at(row));
+    m_ordering->addItem(*items->at(row));
+    ui->addToCart->setText(QString("Add to Cart (%1)").arg(m_ordering->cart().size()));
 }
 
 viewMenu::~viewMenu(){

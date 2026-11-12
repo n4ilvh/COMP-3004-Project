@@ -26,9 +26,9 @@
     <item>
      <layout class="QVBoxLayout" name="buttonHolder">
       <item>
-       <widget class="QPushButton" name="sandwhiches">
+       <widget class="QPushButton" name="sandwiches">
         <property name="text">
-         <string>Sandwhiches</string>
+         <string>Sandwiches</string>
         </property>
        </widget>
       </item>

@@ -10,7 +10,17 @@ PlaceOrder::PlaceOrder(PlaceOrderControl &ordering, Customer &customer, QWidget 
 {
     ui->setupUi(m_form);
     contentLayout()->addWidget(m_form);
+
+    ui->cartTable->setColumnCount(4);
+    ui->cartTable->setHorizontalHeaderLabels({"Item", "Qty", "Unit Price", "Line Total"});
+    ui->cartTable->horizontalHeader()->setStretchLastSection(true);
+    ui->cartTable->verticalHeader()->setVisible(false);
+    ui->cartTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    ui->cartTable->setSelectionBehavior(QAbstractItemView::SelectRows);
+
     connect(ui->pushButton, &QPushButton::clicked, this, &PlaceOrder::onConfirmClicked);
+    connect(ui->spinBox, qOverload<int>(&QSpinBox::valueChanged),  this, &PlaceOrder::refresh);
+    connect(ui->doubleSpinBox, qOverload<double>(&QDoubleSpinBox::valueChanged), this, &PlaceOrder::refresh);
 }
 
 void PlaceOrder::refresh(){
@@ -23,11 +33,18 @@ void PlaceOrder::refresh(){
         ui->cartTable->setItem(i, 3, new QTableWidgetItem(QString("$%1").arg(lines[i].lineTotal(), 0, 'f', 2)));
     }
 
-    ui->spinBox->setMaximum(m_ordering.maxPoints());
-    ui->doubleSpinBox->setMaximum(m_ordering.maxCredit(ui->spinBox->value()));
+
 
     const Order p = m_ordering.preview(ui->spinBox->value(), ui->doubleSpinBox->value());
     ui->Subtotal->setText(QString("$%1").arg(p.subtotal(), 0, 'f', 2));
+    ui->Tax->setText(QString("$%1").arg(p.tax(), 0, 'f', 2));
+    ui->FinalPrice->setText(QString("$%1").arg(p.finalPrice(), 0, 'f', 2));
+    ui->PointsRedeemed->setText(QString::number(ui->spinBox->value()));
+    ui->CreditApplied->setText(QString("$%1").arg(ui->doubleSpinBox->value(), 0, 'f', 2));
+    ui->AmountToBePaid->setText(QString("$%1").arg(p.amountCharged(), 0, 'f', 2));
+
+    ui->spinBox->setMaximum(m_ordering.maxPoints());
+    ui->doubleSpinBox->setMaximum(m_ordering.maxCredit(ui->spinBox->value()));
 }
 
 void PlaceOrder::onConfirmClicked(){
@@ -41,6 +58,10 @@ void PlaceOrder::onConfirmClicked(){
     }
 
     QMessageBox::information(this, "Order placed", "Thank you for your purchase.");
-    emit backRequested();
+
+    ui->spinBox->setValue(0);
+    ui->doubleSpinBox->setValue(0);
+
     refresh();
+    emit backRequested();
 }
