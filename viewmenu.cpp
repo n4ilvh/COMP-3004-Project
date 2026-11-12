@@ -10,6 +10,9 @@ viewMenu::viewMenu(SystemData &data, Mode mode, PlaceOrderControl *ordering, QWi
     ui->setupUi(m_form);
     contentLayout()->addWidget(m_form);
     ui->addToCart->setVisible(m_mode == Mode::Order);
+    ui->checkoutRequest->setVisible(m_mode == Mode::Order);
+
+    connect(ui->checkoutRequest, &QPushButton::clicked, this, &viewMenu::checkoutRequested);
 
     connect(ui->sandwhiches, &QPushButton::clicked, this, [this] {ui->stackedWidget->setCurrentIndex(0);});
     connect(ui->hotBeverages, &QPushButton::clicked, this, [this] {ui->stackedWidget->setCurrentIndex(1);});

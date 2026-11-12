@@ -5,11 +5,14 @@
 #include "useridentificationcontrol.h"
 #include <QList>
 #include <QMainWindow>
+#include <memory>
 
 class QStackedWidget;
 class LoginWidget;
 class RoleHomeWidget;
 class FeaturePage;
+class PlaceOrderControl;
+class PlaceOrder;
 
 class MainWindow : public QMainWindow {
     Q_OBJECT
@@ -30,6 +33,7 @@ private:
     LoginWidget *m_login;
     RoleHomeWidget *m_roleView = nullptr;
     User *m_currentUser = nullptr;
+    std::unique_ptr<PlaceOrderControl> m_ordering;
     QList<FeaturePage *> m_featurePages;     // deleted on Exit
 };
 

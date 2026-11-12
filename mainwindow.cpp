@@ -10,6 +10,8 @@
 #include "viewqueue.h"
 #include <QVBoxLayout>
 #include <QPushButton>
+#include "placeordercontrol.h"
+#include "placeorder.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), m_idControl(m_data)
@@ -42,8 +44,19 @@ void MainWindow::onLoginRequested(const QString &nameOrUsername)
     // Administrator show just their user type and name.
     if (auto *customer = dynamic_cast<Customer *>(user)) {
         Q_UNUSED(customer)
+        m_ordering = std::make_unique<PlaceOrderControl>(m_data, *customer);
 
+        //Browse
         addFeaturePage("View Menu", new viewMenu(m_data, viewMenu::Mode::Browse));
+
+        //Order, same as browse but you can put stuff in the cart
+        auto *orderMenu = new viewMenu(m_data, viewMenu::Mode::Order, m_ordering.get());
+        addFeaturePage("Place Order", orderMenu);
+
+        m_checkout = new PlaceOrder(*m_ordering, *customer);
+        m_stack->addWidget(m_checkout);
+        connect(orderMenu, &viewMenu::checkoutRequested, this, [this] {m_stack->setCurrentWidget(m_checkout); });
+        connect(m_checkout, &FeaturePage::backRequested, this, [this, orderMenu] {m_stack->setCurrentWidget(orderMenu); });
 
         // Feature 4: View Customer Online Dashboard
         addFeaturePage("View Dashboard", new ViewDashboard(*customer));
@@ -90,6 +103,12 @@ void MainWindow::onExitRequested()
         page->deleteLater();
     }
     m_featurePages.clear();
+    if (m_checkout) {
+        m_stack->removeWidget(m_checkout);
+        m_checkout->deleteLater();
+        m_checkout = nullptr;
+    }
+
     if (m_roleView) {
         m_stack->removeWidget(m_roleView);
         m_roleView->deleteLater();
