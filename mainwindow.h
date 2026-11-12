@@ -34,6 +34,7 @@ private:
     RoleHomeWidget *m_roleView = nullptr;
     User *m_currentUser = nullptr;
     std::unique_ptr<PlaceOrderControl> m_ordering;
+    PlaceOrder *m_checkout = nullptr;
     QList<FeaturePage *> m_featurePages;     // deleted on Exit
 };
 

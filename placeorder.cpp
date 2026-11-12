@@ -29,3 +29,18 @@ void PlaceOrder::refresh(){
     const Order p = m_ordering.preview(ui->spinBox->value(), ui->doubleSpinBox->value());
     ui->Subtotal->setText(QString("$%1").arg(p.subtotal(), 0, 'f', 2));
 }
+
+void PlaceOrder::onConfirmClicked(){
+    QString error;
+    const int points = ui->spinBox->value();
+    const double credit = ui->doubleSpinBox->value();
+
+    if (!m_ordering.place(points, credit, &error)) {
+        QMessageBox::warning(this, "Cannot place order", error);
+        return;
+    }
+
+    QMessageBox::information(this, "Order placed", "Thank you for your purchase.");
+    emit backRequested();
+    refresh();
+}

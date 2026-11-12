@@ -12,6 +12,8 @@ namespace Ui {
 
 class viewMenu : public FeaturePage{
     Q_OBJECT
+signals:
+    void checkoutRequested();
 public:
     enum class Mode {Browse, Order};
     explicit viewMenu(SystemData &data, Mode mode, PlaceOrderControl *ordering = nullptr, QWidget *parent = nullptr);
