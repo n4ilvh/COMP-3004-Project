@@ -3,6 +3,7 @@
 #include "customer.h"
 #include "menuitem.h"
 #include <QDateTime>
+#include <algorithm>
 
 PlaceOrderControl::PlaceOrderControl(SystemData &data, Customer &customer) : m_data(data), m_customer(&customer){
 
@@ -31,8 +32,9 @@ int PlaceOrderControl::maxPoints() const{
 }
 
 double PlaceOrderControl::maxCredit(int points) const{
-    const double finalPrice = (subtotal() * Order::TAX_RATE);
-    return std::min((m_customer->accountCredit()), static_cast<double>(finalPrice - points));
+    points = std::clamp(points, 0, maxPoints());
+    const double finalPrice = preview(points, 0).finalPrice();
+    return std::max(0.0, std::min(m_customer->accountCredit(), finalPrice - points));
 }
 
 Order PlaceOrderControl::preview(int points, double credit) const{
@@ -45,7 +47,7 @@ Order PlaceOrderControl::preview(int points, double credit) const{
     return tmp;
 }
 
-bool PlaceOrderControl::canPlae(QString *reason) const{
+bool PlaceOrderControl::canPlace(QString *reason) const{
     if(m_cart.isEmpty()){
         if(reason) *reason = QStringLiteral("Your cart is empty");
         return false;

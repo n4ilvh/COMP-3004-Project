@@ -1,0 +1,8 @@
+build-*/
+ui_*.h
+*.o
+Makefile
+.qmake.stash
+*.autosave
+*.pro.user
+moc_*.cpp

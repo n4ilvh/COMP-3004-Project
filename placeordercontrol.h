@@ -19,6 +19,7 @@ public:
     void clear();
 
     bool isEmpty() const {return m_cart.isEmpty();}
+    const QList<OrderLine> &cart() const { return m_cart; }
 
     double subtotal() const;
     int maxPoints() const;

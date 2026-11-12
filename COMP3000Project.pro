@@ -9,6 +9,7 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     loginwidget.cpp \
+    placeorder.cpp \
     placeordercontrol.cpp \
     rolehomewidget.cpp \
     useridentificationcontrol.cpp \
@@ -32,6 +33,7 @@ HEADERS += \
     ingredient.h \
     mainwindow.h \
     loginwidget.h \
+    placeorder.h \
     placeordercontrol.h \
     rolehomewidget.h \
     useridentificationcontrol.h \

@@ -3,16 +3,20 @@
 #include "systemdata.h"
 #include "menu.h"
 #include "menuitem.h"
+#include "placeordercontrol.h"
+#include <QListWidget>
 
-viewMenu::viewMenu(SystemData &data, Mode mode, QWidget *parent) : FeaturePage("Cafe Menu", parent), ui(new Ui::viewMenu), m_data(data), m_mode(mode){
-    m_form = new QWidget;
+viewMenu::viewMenu(SystemData &data, Mode mode, PlaceOrderControl *ordering, QWidget *parent) : FeaturePage("Cafe Menu", parent), m_mode(mode), ui(new Ui::viewMenu), m_form(new QWidget), m_data(data), m_ordering(ordering){
     ui->setupUi(m_form);
-    ui->addToCart->setVisible(m_mode == Mode::Order);
     contentLayout()->addWidget(m_form);
+    ui->addToCart->setVisible(m_mode == Mode::Order);
 
     connect(ui->sandwhiches, &QPushButton::clicked, this, [this] {ui->stackedWidget->setCurrentIndex(0);});
     connect(ui->hotBeverages, &QPushButton::clicked, this, [this] {ui->stackedWidget->setCurrentIndex(1);});
     connect(ui->coldBeverages, &QPushButton::clicked, this, [this] {ui->stackedWidget->setCurrentIndex(2);});
+
+    if (m_ordering)
+        connect(ui->addToCart, &QPushButton::clicked, this, &viewMenu::onAddToCart);
 
 }
 
@@ -38,6 +42,19 @@ void viewMenu::refresh(){
         ui->listWidget_3->addItem(QString("%1    $%2").arg(m->name()).arg(m->price(), 0, 'f', 2));
     }
 
+}
+
+void viewMenu::onAddToCart(){
+    auto *list = qobject_cast<QListWidget *>(ui->stackedWidget->currentWidget());
+    if (!list) return;
+
+    const int row = list->currentRow();
+    if (row < 0) return;
+
+    const QList<const MenuItem *> &items =
+            (list == ui->listWidget) ? m_sandwhichItems :
+            (list == ui->listWidget_2) ? m_hotBeverages : m_coldBeverages;
+   if (row < items.size() && m_ordering) m_ordering->addItem(*items.at(row));
 }
 
 viewMenu::~viewMenu(){
