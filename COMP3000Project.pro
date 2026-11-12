@@ -9,6 +9,7 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     loginwidget.cpp \
+    placeordercontrol.cpp \
     rolehomewidget.cpp \
     useridentificationcontrol.cpp \
     systemdata.cpp \
@@ -31,6 +32,7 @@ HEADERS += \
     ingredient.h \
     mainwindow.h \
     loginwidget.h \
+    placeordercontrol.h \
     rolehomewidget.h \
     useridentificationcontrol.h \
     systemdata.h \
@@ -51,4 +53,5 @@ HEADERS += \
     viewqueue.h
 
 FORMS += \
+    PlaceOrder.ui \
     ViewMenu.ui

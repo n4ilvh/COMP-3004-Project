@@ -13,7 +13,7 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -43,6 +43,13 @@
        <widget class="QPushButton" name="coldBeverages">
         <property name="text">
          <string>Cold Beverages</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="addToCart">
+        <property name="text">
+         <string>Add to Cart</string>
         </property>
        </widget>
       </item>

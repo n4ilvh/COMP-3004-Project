@@ -12,16 +12,21 @@ namespace Ui {
 class viewMenu : public FeaturePage{
     Q_OBJECT
 public:
-    explicit viewMenu(SystemData &data, QWidget *parent = nullptr);
+    enum class Mode {Browse, Order};
+    explicit viewMenu(SystemData &data, Mode mode, QWidget *parent = nullptr);
     ~viewMenu();
 
 public slots:
     void refresh() override;
 
 private:
+    Mode m_mode;
     Ui::viewMenu *ui;
     QWidget *m_form;
     SystemData &m_data;
+    QList<const MenuItem *> m_sandwhichItems;
+    QList<const MenuItem *> m_hotBeverages;
+    QList<const MenuItem *> m_coldBeverages;
 };
 
 #endif // VIEWMENU_H

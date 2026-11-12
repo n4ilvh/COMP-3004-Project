@@ -43,7 +43,7 @@ void MainWindow::onLoginRequested(const QString &nameOrUsername)
     if (auto *customer = dynamic_cast<Customer *>(user)) {
         Q_UNUSED(customer)
 
-        addFeaturePage("View Menu", new viewMenu(m_data));
+        addFeaturePage("View Menu", new viewMenu(m_data, viewMenu::Mode::Browse));
 
         // Feature 4: View Customer Online Dashboard
         addFeaturePage("View Dashboard", new ViewDashboard(*customer));
