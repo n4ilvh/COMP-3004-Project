@@ -37,7 +37,7 @@ public:
     const QString &customerName() const { return m_customerName; }
     OrderType type() const { return m_type; }
     const QDateTime &placedAt() const { return m_placedAt; }
-    QString placedAtText() const { return m_placedAt.toString("yyyy-MM-dd HH:mm"); }
+    QString placedAtText() const { return m_placedAt.toString("yyyy-MM-dd:HH:mm"); }
     const QList<OrderLine> &lines() const { return m_lines; }
 
     double subtotal() const { return m_subtotal; }
