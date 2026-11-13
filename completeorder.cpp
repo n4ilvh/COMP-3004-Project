@@ -148,5 +148,6 @@ void completeorder::onConfirm()
     }
     m_order.applyPayment(m_pointsSpin->value(), m_creditSpin->value());
     m_order.setStatus(OrderStatus::Completed);
+    emit orderCompleted(m_order);
     accept();
 }
