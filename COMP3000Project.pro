@@ -27,7 +27,9 @@ SOURCES += \
     dashboardcontrol.cpp \
     viewdashboard.cpp \
     viewqueuecontrol.cpp \
-    viewqueue.cpp
+    viewqueue.cpp \
+    completeorder.cpp \
+    vieworderdetails.cpp
 
 HEADERS += \
     ingredient.h \
@@ -52,7 +54,9 @@ HEADERS += \
     dashboardcontrol.h \
     viewdashboard.h \
     viewqueuecontrol.h \
-    viewqueue.h
+    viewqueue.h \
+    completeorder.h \
+    vieworderdetails.h
 
 FORMS += \
     PlaceOrder.ui \

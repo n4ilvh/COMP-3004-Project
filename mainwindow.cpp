@@ -12,6 +12,8 @@
 #include <QPushButton>
 #include "placeordercontrol.h"
 #include "placeorder.h"
+#include "completeorder.h"
+#include "vieworderdetails.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), m_idControl(m_data)
@@ -69,6 +71,9 @@ void MainWindow::onLoginRequested(const QString &nameOrUsername)
         auto *queueView = new ViewQueue(m_data.orderQueue());
         addFeaturePage("View Order Queue", queueView);
         // features 6 and 7: connect queueView's viewDetailsRequested / completeOrderRequested here
+
+        connect(queueView, &ViewQueue::viewDetailsRequested, this, &MainWindow::showOrderDetails);
+        connect(queueView, &ViewQueue::completeOrderRequested, this, &MainWindow::completeQueuedOrder);
     }
     // --------------------------------------------------------------------------
 
@@ -87,6 +92,49 @@ void MainWindow::addFeaturePage(const QString &buttonText, FeaturePage *page)
     connect(button, &QPushButton::clicked, this, [this, page] { m_stack->setCurrentWidget(page); });
     connect(page, &FeaturePage::backRequested, this, &MainWindow::showRoleHome);
 }
+
+Customer *MainWindow::findCustomer(const  QString &username) const
+{
+    for (const auto &u : m_data.users()){
+        if(u->username() == username){
+            return dynamic_cast<Customer *>(u.get());
+        }
+    }
+    return nullptr;
+}
+
+void MainWindow::showOrderDetails(int orderNumber)
+{
+    const Order *order = m_data.orderQueue().find(orderNumber);
+    if(!order){
+        return;
+    }
+    vieworderdetails dialog(*order, this);
+    dialog.exec();
+}
+
+void MainWindow::completeQueuedOrder(int orderNumber)
+{
+
+    const Order *queued = m_data.orderQueue().find(orderNumber);
+    if(!queued){
+        return;
+    }
+
+    completeorder dialog(*queued, queued->loyaltyPointsUsed(), queued->accountCreditUsed(), this);
+    connect(&dialog, &completeorder::orderCompleted, this, [this](const Order &done) {
+
+        if(Customer *customer= findCustomer(done.customerUsername())){
+            if(Order *current = customer->currentOrder(); current && current->orderNumber() == done.orderNumber()){
+                *current = done;
+            }
+            customer->addLoyaltyPoints(done.loyaltyPointsEarned());
+        }
+        m_data.orderQueue().remove(done.orderNumber());
+    });
+    dialog.exec();
+}
+
 
 void MainWindow::showRoleHome()
 {

@@ -13,6 +13,7 @@ class RoleHomeWidget;
 class FeaturePage;
 class PlaceOrderControl;
 class PlaceOrder;
+class Customer;
 
 class MainWindow : public QMainWindow {
     Q_OBJECT
@@ -24,8 +25,11 @@ private slots:
     void onLoginRequested(const QString &nameOrUsername);
     void onExitRequested();
     void showRoleHome();
+    void showOrderDetails(int orderNumber);
+    void completeQueuedOrder(int orderNumber);
 
 private:
+    Customer *findCustomer(const QString &username) const;
     void addFeaturePage(const QString &buttonText, FeaturePage *page);
 
     SystemData m_data;                       // all in-memory data (declared first)
